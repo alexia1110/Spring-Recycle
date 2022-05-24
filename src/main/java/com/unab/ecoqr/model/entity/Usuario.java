@@ -7,10 +7,15 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
 @Table(name = "usuarios")
+@EntityListeners(AuditingEntityListener.class)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Usuario implements Serializable {
 
     @Id
@@ -102,11 +107,11 @@ public class Usuario implements Serializable {
         this.contenedores = contenedores;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -227,6 +232,15 @@ public class Usuario implements Serializable {
         contenedores.add(contenedor);
     }
 
+
+    @Override
+    public String toString() {
+        return "{apellidoFirst=" + apellidoFirst + ", apellidoSecond=" + apellidoSecond + ", calle=" + calle
+                + ", contenedores=" + contenedores + ", estado=" + estado + ", fechaRegistro=" + fechaRegistro + ", id="
+                + id + ", id_ciudad=" + id_ciudad + ", id_region=" + id_region + ", mail=" + mail + ", nombre=" + nombre
+                + ", numeroCalle=" + numeroCalle + ", pass=" + pass + ", sexo=" + sexo + "}";
+    }
+
     // @Override
     // public String toString() {
     //     return "{apellidoFirst=" + apellidoFirst + ", apellidoSecond=" + apellidoSecond + ", calle=" + calle
@@ -234,5 +248,6 @@ public class Usuario implements Serializable {
     //             + ", mail=" + mail + ", nombre=" + nombre + ", numeroCalle=" + numeroCalle + ", pass=" + pass
     //             + ", sexo=" + sexo + ", fechaRegistro=" + fechaRegistro + "}";
     // }
+    
 
 }

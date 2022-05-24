@@ -113,11 +113,18 @@ public class Contenedor implements Serializable{
 
 
     public void addResiduo(Residuo residuo){
+        
         residuos.add(residuo);
     }
 
 
-    private static final long serialVersionUID = 1l; 
+    private static final long serialVersionUID = 1l;
+
+    @Override
+    public String toString() {
+        return "{estadoReciclado=" + isEstadoReciclado() + ", fechaCreacion=" + getFechaCreacion()
+                + ", fechaReciclado=" + getFechaReciclado() + ", id=" + getId() + ", residuos=" + getResiduos()  + "}";
+    } 
 
     
 
