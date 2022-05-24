@@ -1,0 +1,6 @@
+INSERT INTO usuarios (nombre,apellido_first,apellido_second, sexo, calle, numero_calle,id_ciudad,id_region, mail, pass, estado,fecha_registro) VALUES('eliana alexia','urrutia','jeldres','F','sismografo','812','13','13','eliana.alexia@gmail.com','arya11', false, NOW())
+INSERT INTO contenedores (fecha_creacion, fecha_reciclado,estado_reciclado, usuario_id) VALUES (NOW(), NOW(), true, 1)
+INSERT INTO contenedores (fecha_creacion, fecha_reciclado,estado_reciclado, usuario_id) VALUES (NOW(), null, false, 1)
+INSERT INTO residuos (nombre_empresa, material, categoria, contenedor_id) VALUES ('colun','carbor_drink','tetrapak',1)
+INSERT INTO residuos (nombre_empresa, material, categoria, contenedor_id) VALUES ('colun','carbor_drink','tetrapak',2)
+INSERT INTO residuos (nombre_empresa, material, categoria, contenedor_id) VALUES ('colun','carbor_drink','tetrapak',2)
