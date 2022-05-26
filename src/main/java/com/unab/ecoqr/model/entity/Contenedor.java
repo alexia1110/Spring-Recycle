@@ -90,6 +90,7 @@ public class Contenedor implements Serializable{
 
 
     public void setEstadoReciclado(boolean estadoReciclado) {
+      //  this.fechaReciclado = new Date();
         this.estadoReciclado = estadoReciclado;
     }
 

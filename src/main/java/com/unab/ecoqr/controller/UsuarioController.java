@@ -3,6 +3,7 @@ package com.unab.ecoqr.controller;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,6 +57,18 @@ public class UsuarioController {
             .body(result);
     }
 
+    @GetMapping("/login/{mail}&{pass}")
+    public ResponseEntity<Usuario> login(@Validated @PathVariable String mail,  @PathVariable String pass) throws URISyntaxException{
+        Optional<Usuario>  usuarioFind = usuarioService.findByMail(mail);
+        if (usuarioFind.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}else{
+             return ResponseEntity.created(new URI("/usuario/login"))
+             .headers(HeaderUtil.createEntityCreationAlert("ecoQR", false, "Contenedor", usuarioFind.get().getMail()))
+            .body(usuarioFind.get());
+        }
+    }
+
     @PostMapping("/new_container/{id}")
     public ResponseEntity<Contenedor> createContainer(@Validated @PathVariable Long id, @RequestBody Contenedor contenedorDTO) throws URISyntaxException {
         log.info("REST request to save Usuario : {}", id  );
@@ -64,7 +77,7 @@ public class UsuarioController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}else{
     
-             contenedorDTO.setUsuario(usuarioFind.get());
+            contenedorDTO.setUsuario(usuarioFind.get());
             Contenedor newContanedor = new Contenedor();
             newContanedor.setEstadoReciclado(contenedorDTO.isEstadoReciclado());
             newContanedor.setUsuario(usuarioFind.get());
@@ -92,17 +105,36 @@ public class UsuarioController {
             //    .headers(HeaderUtil.createEntityCreationAlert("ecoQR", false, "Contenedor", usuarioFind.toString()))
             //      .body(usuarioFind);
         }
-       // log.info("respuesta", usuarioDao.findByMailLikeIgnoreCase(usuarioDTO.getMail()));
-    //    if (usuarioDao.findByMailLikeIgnoreCase(usuario.getMail()).isPresent()) {
-    //      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    //         // BadRequestAlertException("Ya existe una actividad con el id", ENTITY_NAME, "idexists");
-    //    }
- 
-  
-    //    contenedorDTO.setUsuario(usuarioFind);
-    // 
-    //    log.info(result.toString());
      
+    }
+
+    @GetMapping("/delete_contenedor/{id}")
+	public ResponseEntity<Contenedor>  eliminarContenedor(@Validated @PathVariable Long id) throws URISyntaxException {
+		
+		Contenedor contenedor = contenedorDao.findById(id).orElse(null);
+		
+		if(contenedor != null) {
+			usuarioService.deleteContenedor(id);
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+		}
+	else{
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+	}
+
+
+    @GetMapping("/recycle/{id}")
+    public ResponseEntity<Contenedor> reciclarContenedor( @PathVariable Long id)throws URISyntaxException {
+        Contenedor contenedor = contenedorDao.findById(id).orElse(null);
+        if(contenedor != null) {
+			contenedor.setEstadoReciclado(true);
+            contenedor.setFechaReciclado(new Date());
+            contenedorDao.save(contenedor);
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+		}
+        else{
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
     
 }
