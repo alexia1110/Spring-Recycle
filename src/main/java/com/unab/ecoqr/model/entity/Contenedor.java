@@ -9,8 +9,6 @@ import javax.persistence.*;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-
-
 @Entity
 @Table(name = "contenedores")
 public class Contenedor implements Serializable{
@@ -33,12 +31,9 @@ public class Contenedor implements Serializable{
     private boolean estadoReciclado;
 
     @OneToMany(mappedBy = "contenedor", fetch = FetchType.LAZY ,cascade = CascadeType.ALL)
-    //@Column(name = "residuos")
     private List<Residuo> residuos;
 
     @ManyToOne(fetch = FetchType.LAZY)
-   // @JoinColumn(name="usuario_id")
-  //  @Column(name = "usuario_id")
     private Usuario usuario;
 
     @PrePersist
@@ -123,8 +118,8 @@ public class Contenedor implements Serializable{
 
     @Override
     public String toString() {
-        return "{estadoReciclado=" + isEstadoReciclado() + ", fechaCreacion=" + getFechaCreacion()
-                + ", fechaReciclado=" + getFechaReciclado() + ", id=" + getId() + ", residuos=" + getResiduos()  + "}";
+        return "{\"estadoReciclado\":" + isEstadoReciclado() + ", \"fechaCreacion\":\"" + getFechaCreacion()
+                + "\", \"fechaReciclado\":\"" + getFechaReciclado() + "\",\"id\":\"" + getId() + "\", \"residuos\":" + getResiduos().toString()  + "}";
     } 
 
     

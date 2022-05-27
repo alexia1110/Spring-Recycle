@@ -81,7 +81,14 @@ public class Residuo  implements Serializable{
     }
 
     
-    private static final long serialVersionUID = 1l; 
+    private static final long serialVersionUID = 1l;
+
+
+    @Override
+    public String toString() {
+        return "{\"categoria\":\"" + categoria + "\", \"id\":\"" + id + "\", \"material\":\"" + material + "\", \"nombreEmpresa\":\""
+                + nombreEmpresa + "\"}";
+    } 
 
 
 

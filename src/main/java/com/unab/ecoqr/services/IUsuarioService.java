@@ -23,6 +23,7 @@ public interface IUsuarioService {
    // public Residuo findResiduoById(Long id);
     public void deleteContenedor(Long id);
     //public List<Contenedor> findContenedorByEstado(Pageable pageable);
-    public Page<Contenedor> findContenedorByEstado(Pageable pageable, Long user_id, boolean estado);
+    public List<Contenedor> findContenedorByEstado(Long id, boolean estado);
     public Optional<Usuario> findByMail(String mail);
+    // public List<Contenedor> findAllContenedor(Long id);
 }

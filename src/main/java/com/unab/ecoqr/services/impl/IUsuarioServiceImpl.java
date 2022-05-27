@@ -3,7 +3,6 @@ import java.util.List;
 import java.util.Optional;
 
 import com.unab.ecoqr.model.dao.IContenedorDao;
-import com.unab.ecoqr.model.dao.IResiduosDao;
 import com.unab.ecoqr.model.dao.IUsuarioDao;
 import com.unab.ecoqr.model.entity.Contenedor;
 import com.unab.ecoqr.model.entity.Usuario;
@@ -84,11 +83,23 @@ public class IUsuarioServiceImpl implements IUsuarioService{
 		contenedorDao.deleteById(id);
 	}
 
+	// @Override
+	// @Transactional
+	// public List<Contenedor> findAllContenedor(Long id){
+	// Usuario user = 	usuarioDao.findById(id).orElse(null);
+
+	//   List<Contenedor>  contenedores = user.getContenedores();
+	//   return contenedores;
+
+	// }
+
+
+
 
     @Override
 	@Transactional(readOnly = true)
-	public Page<Contenedor> findContenedorByEstado(Pageable pageable, Long id, boolean estado) {
-		return contenedorDao.findByEstadoRecicladoAndUsuario_id(pageable,estado, id);
+	public List<Contenedor> findContenedorByEstado( Long id, boolean estado) {
+		return contenedorDao.findByEstadoRecicladoAndUsuario_id(estado, id);
 	}
 
 

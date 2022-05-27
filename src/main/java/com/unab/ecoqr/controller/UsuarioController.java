@@ -20,9 +20,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,19 +55,19 @@ public class UsuarioController {
     }
 
     @GetMapping("/login/{mail}&{pass}")
-    public ResponseEntity<Usuario> login(@Validated @PathVariable String mail,  @PathVariable String pass) throws URISyntaxException{
+    public ResponseEntity<String> login(@Validated @PathVariable String mail,  @PathVariable String pass) throws URISyntaxException{
         Optional<Usuario>  usuarioFind = usuarioService.findByMail(mail);
         if (usuarioFind.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}else{
-             return ResponseEntity.created(new URI("/usuario/login"))
+             return ResponseEntity.created(new URI("/usuario/login/ok"))
              .headers(HeaderUtil.createEntityCreationAlert("ecoQR", false, "Contenedor", usuarioFind.get().getMail()))
-            .body(usuarioFind.get());
+            .body(usuarioFind.get().toString());
         }
     }
 
     @PostMapping("/new_container/{id}")
-    public ResponseEntity<Contenedor> createContainer(@Validated @PathVariable Long id, @RequestBody Contenedor contenedorDTO) throws URISyntaxException {
+    public ResponseEntity<String> createContainer(@Validated @PathVariable Long id, @RequestBody Contenedor contenedorDTO) throws URISyntaxException {
         log.info("REST request to save Usuario : {}", id  );
         Optional<Usuario>  usuarioFind = usuarioService.findOne(id);
 		if (!usuarioService.exist(id)) {
@@ -95,15 +92,9 @@ public class UsuarioController {
             }
              result.setResiduos(newResid);
              contenedorDao.save(result);
-             return new ResponseEntity<>(HttpStatus.ACCEPTED);
-            // return ResponseEntity.created(new URI("/usuario/new_container/"))
-            // .headers(HeaderUtil.createEntityCreationAlert("ecoQR", false, "Contenedor", "hi"))
-            // .body(contenedorDTO);
-           
-           // log.info("respuesta", usuarioFind.getId().toString());
-            // return  ResponseEntity.created(new URI("/usuario/new_container/ok"))
-            //    .headers(HeaderUtil.createEntityCreationAlert("ecoQR", false, "Contenedor", usuarioFind.toString()))
-            //      .body(usuarioFind);
+             return ResponseEntity.created(new URI("/usuario/login/ok"))
+             .headers(HeaderUtil.createEntityCreationAlert("ecoQR", false, "Contenedor", usuarioFind.get().getMail()))
+            .body(result.toString());
         }
      
     }
@@ -135,6 +126,52 @@ public class UsuarioController {
         else{
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+    @GetMapping("/list_container/{id}")
+    public  ResponseEntity<String>  listContenedor( @PathVariable Long id)throws URISyntaxException {
+
+      Optional<Usuario>  usuarioFind = usuarioService.findOne(id);
+		if (!usuarioService.exist(id)) {
+            return null;
+		}else{
+            return ResponseEntity.created(new URI("/usuario/login/ok"))
+            .headers(HeaderUtil.createEntityCreationAlert("ecoQR", false, "Contenedor", usuarioFind.get().getMail()))
+           .body(usuarioFind.get().getContenedores().toString());
+        } 
+    }
+
+    @GetMapping("/list_container_reciclados/{id}")
+    public  ResponseEntity<String>  listContenedorReciclados( @PathVariable Long id)throws URISyntaxException {
+
+      Optional<Usuario>  usuarioFind = usuarioService.findOne(id);
+		if (!usuarioService.exist(id)) {
+            return null;
+		}else{
+            List<Contenedor>  contendores = usuarioService.findContenedorByEstado(id, true);
+            return ResponseEntity.created(new URI("/usuario/login/ok"))
+            .headers(HeaderUtil.createEntityCreationAlert("ecoQR", false, "Contenedor", usuarioFind.get().getMail()))
+           .body(contendores.toString());
+        } 
+    }
+
+        @GetMapping("/getResiduos/{id}")
+        public ResponseEntity<String> listResiduo( @PathVariable Long id)throws URISyntaxException {
+            Contenedor  cont = contenedorDao.findById(id).orElse(null);
+            if(cont == null) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }else{
+            //  List<Contenedor> cont =  usuarioFind.get().getContenedores();
+            List<Residuo> residuos = cont.getResiduos();
+            for(int i = 0; i < residuos.size(); i++){
+                log.info(residuos.get(i).toString());
+            }
+            log.info("residuos", residuos);
+            //  Residuo residuo = cont.get(1).getResiduos().get(0);
+          log.info(residuos.get(0).toString());
+                return ResponseEntity.created(new URI("/usuario/getResiduos/ok"))
+                .headers(HeaderUtil.createEntityCreationAlert("ecoQR", false, "Contenedor", "oka"))
+               .body(residuos.toString());
+            } 
     }
     
 }

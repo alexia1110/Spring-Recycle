@@ -235,10 +235,10 @@ public class Usuario implements Serializable {
 
     @Override
     public String toString() {
-        return "{apellidoFirst=" + apellidoFirst + ", apellidoSecond=" + apellidoSecond + ", calle=" + calle
-                + ", contenedores=" + contenedores + ", estado=" + estado + ", fechaRegistro=" + fechaRegistro + ", id="
-                + id + ", id_ciudad=" + id_ciudad + ", id_region=" + id_region + ", mail=" + mail + ", nombre=" + nombre
-                + ", numeroCalle=" + numeroCalle + ", pass=" + pass + ", sexo=" + sexo + "}";
+        return "{\"apellidoFirst\":\"" + apellidoFirst + "\", \"apellidoSecond\":\"" + apellidoSecond + "\", \"calle\":\"" + calle
+                + "\", \"estado\":"+ estado + ", \"fechaRegistro\":\"" + fechaRegistro + "\", \"id\":\""
+                + id + "\", \"id_ciudad\":\"" + id_ciudad + "\", \"id_region\":\"" + id_region + "\", \"mail\":\"" + mail + "\",\"nombre\":\"" + nombre
+                + "\", \"numeroCalle\":\"" + numeroCalle + "\", \"pass\":\"" + pass + "\", \"sexo\":\"" + sexo + "\"}";
     }
 
     // @Override
