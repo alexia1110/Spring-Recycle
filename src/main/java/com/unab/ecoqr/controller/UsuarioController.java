@@ -54,12 +54,18 @@ public class UsuarioController {
             .body(result);
     }
 
-    @GetMapping("/login/{mail}&{pass}")
+    @GetMapping("/login/mail={mail}&pass={pass}")
     public ResponseEntity<String> login(@Validated @PathVariable String mail,  @PathVariable String pass) throws URISyntaxException{
         Optional<Usuario>  usuarioFind = usuarioService.findByMail(mail);
         if (usuarioFind.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}else{
+            log.info(usuarioFind.get().getPass());
+           // log.info(pass);
+           if( !usuarioFind.get().getPass().equals(pass)){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+           }
+
              return ResponseEntity.created(new URI("/usuario/login/ok"))
              .headers(HeaderUtil.createEntityCreationAlert("ecoQR", false, "Contenedor", usuarioFind.get().getMail()))
             .body(usuarioFind.get().toString());
@@ -92,7 +98,7 @@ public class UsuarioController {
             }
              result.setResiduos(newResid);
              contenedorDao.save(result);
-             return ResponseEntity.created(new URI("/usuario/login/ok"))
+             return ResponseEntity.created(new URI("/usuario/new_container/ok"))
              .headers(HeaderUtil.createEntityCreationAlert("ecoQR", false, "Contenedor", usuarioFind.get().getMail()))
             .body(result.toString());
         }
@@ -106,6 +112,20 @@ public class UsuarioController {
 		
 		if(contenedor != null) {
 			usuarioService.deleteContenedor(id);
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+		}
+	else{
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+	}
+
+    @GetMapping("/delete_usuario/{id}")
+	public ResponseEntity<String>  eliminarUsuario(@Validated @PathVariable Long id) throws URISyntaxException {
+		
+		Usuario usuario = usuarioDao.findById(id).orElse(null);
+		
+		if(usuario != null) {
+			usuarioService.delete(id);
             return new ResponseEntity<>(HttpStatus.ACCEPTED);
 		}
 	else{
@@ -134,7 +154,7 @@ public class UsuarioController {
 		if (!usuarioService.exist(id)) {
             return null;
 		}else{
-            return ResponseEntity.created(new URI("/usuario/login/ok"))
+            return ResponseEntity.created(new URI("/usuario/list_container/ok"))
             .headers(HeaderUtil.createEntityCreationAlert("ecoQR", false, "Contenedor", usuarioFind.get().getMail()))
            .body(usuarioFind.get().getContenedores().toString());
         } 
@@ -148,7 +168,7 @@ public class UsuarioController {
             return null;
 		}else{
             List<Contenedor>  contendores = usuarioService.findContenedorByEstado(id, true);
-            return ResponseEntity.created(new URI("/usuario/login/ok"))
+            return ResponseEntity.created(new URI("/usuario/list_container_reciclados/ok"))
             .headers(HeaderUtil.createEntityCreationAlert("ecoQR", false, "Contenedor", usuarioFind.get().getMail()))
            .body(contendores.toString());
         } 
