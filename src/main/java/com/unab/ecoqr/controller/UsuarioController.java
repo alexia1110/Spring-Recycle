@@ -174,6 +174,20 @@ public class UsuarioController {
         } 
     }
 
+    @GetMapping("/list_container_no_reciclados/{id}")
+    public  ResponseEntity<String>  listContenedoresNoReciclados( @PathVariable Long id)throws URISyntaxException {
+
+      Optional<Usuario>  usuarioFind = usuarioService.findOne(id);
+		if (!usuarioService.exist(id)) {
+            return null;
+		}else{
+            List<Contenedor>  contendores = usuarioService.findContenedorByEstado(id, false);
+            return ResponseEntity.created(new URI("/usuario/list_container_reciclados/ok"))
+            .headers(HeaderUtil.createEntityCreationAlert("ecoQR", false, "Contenedor", usuarioFind.get().getMail()))
+           .body(contendores.toString());
+        } 
+    }
+
         @GetMapping("/getResiduos/{id}")
         public ResponseEntity<String> listResiduo( @PathVariable Long id)throws URISyntaxException {
             Contenedor  cont = contenedorDao.findById(id).orElse(null);
