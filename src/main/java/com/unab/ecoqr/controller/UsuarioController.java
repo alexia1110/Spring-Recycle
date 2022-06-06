@@ -248,4 +248,19 @@ public class UsuarioController {
         }
     }
 
+    // @GetMapping("/getContenedoresByMes/{id}&{mes}")
+    // public ResponseEntity<String> listResiduoByMes(@PathVariable Long id, @PathVariable String mes) throws URISyntaxException {
+    //     Contenedor cont = contenedorDao.findById(id).orElse(null);
+    //     Optional<Usuario> usuarioFind = usuarioService.findOne(id);
+    //     if (!usuarioService.exist(id)) {
+    //         return null;
+    //     } else {
+    //         List<Contenedor> contendores = usuarioService.findByFechaRecicladoAndUsuario_id(mes,id);
+    //         return ResponseEntity.created(new URI("/usuario/list_container_reciclados/ok"))
+    //                 .headers(HeaderUtil.createEntityCreationAlert("ecoQR", false, "Contenedor",
+    //                         usuarioFind.get().getMail()))
+    //                 .body(contendores.toString());
+    //     }
+    // }
+
 }
