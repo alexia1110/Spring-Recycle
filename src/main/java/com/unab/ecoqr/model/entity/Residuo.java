@@ -1,9 +1,11 @@
 package com.unab.ecoqr.model.entity;
 
 import java.io.Serializable;
-
+import java.util.Date;
 
 import javax.persistence.*;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "residuos")
@@ -19,6 +21,17 @@ public class Residuo  implements Serializable{
     private String material;
     @Column(name = "categoria")
     private String categoria;
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Column(name = "fecha_elaboracion")
+    private Date fechaElaboracion;
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Column(name = "fecha_vencimiento")
+    private Date fechaVencimiento;
+    @Column(name = "id_sucursal")
+    private String idSucursal;
+
  
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "contenedor_id")
@@ -41,6 +54,30 @@ public class Residuo  implements Serializable{
 
     public Contenedor getContenedor() {
         return contenedor;
+    }
+
+    public Date getFechaElaboracion() {
+        return fechaElaboracion;
+    }
+
+    public void setFechaElaboracion(Date fechaElaboracion) {
+        this.fechaElaboracion = fechaElaboracion;
+    }
+
+    public Date getFechaVencimiento() {
+        return fechaVencimiento;
+    }
+
+    public void setFechaVencimiento(Date fechaVencimiento) {
+        this.fechaVencimiento = fechaVencimiento;
+    }
+
+    public String getIdSucursal() {
+        return idSucursal;
+    }
+
+    public void setIdSucursal(String idSucursal) {
+        this.idSucursal = idSucursal;
     }
 
     public void setContenedor(Contenedor contenedor) {
@@ -87,7 +124,7 @@ public class Residuo  implements Serializable{
     @Override
     public String toString() {
         return "{\"categoria\":\"" + categoria + "\", \"id\":\"" + id + "\", \"material\":\"" + material + "\", \"nombreEmpresa\":\""
-                + nombreEmpresa + "\"}";
+                + nombreEmpresa + "\", \"fechaElaboracion\":\"" + fechaElaboracion +"\", \"fechaVencimiento\":\"" + fechaVencimiento +"\", \"idSucursal\":\"" + idSucursal +"\"}";
     } 
 
 

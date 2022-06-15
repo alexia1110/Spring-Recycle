@@ -98,6 +98,9 @@ public class UsuarioController {
                 resp.setCategoria(contenedorDTO.getResiduos().get(i).getCategoria());
                 resp.setMaterial(contenedorDTO.getResiduos().get(i).getMaterial());
                 resp.setNombreEmpresa(contenedorDTO.getResiduos().get(i).getNombreEmpresa());
+                resp.setFechaElaboracion(contenedorDTO.getResiduos().get(i).getFechaElaboracion());
+                resp.setFechaVencimiento(contenedorDTO.getResiduos().get(i).getFechaVencimiento());
+                resp.setIdSucursal(contenedorDTO.getResiduos().get(i).getIdSucursal());
                 resp.setContenedor(result);
                 newResid.add(resp);
             }
