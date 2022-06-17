@@ -31,6 +31,8 @@ public class Residuo  implements Serializable{
     private Date fechaVencimiento;
     @Column(name = "id_sucursal")
     private String idSucursal;
+    @Column(name = "id_empresa")
+    private String idEmpresa;
 
  
     @ManyToOne(fetch = FetchType.LAZY)
@@ -118,13 +120,24 @@ public class Residuo  implements Serializable{
     }
 
     
+    
+    public String getIdEmpresa() {
+        return idEmpresa;
+    }
+
+    public void setIdEmpresa(String idEmpresa) {
+        this.idEmpresa = idEmpresa;
+    }
+
+
+
     private static final long serialVersionUID = 1l;
 
 
     @Override
     public String toString() {
         return "{\"categoria\":\"" + categoria + "\", \"id\":\"" + id + "\", \"material\":\"" + material + "\", \"nombreEmpresa\":\""
-                + nombreEmpresa + "\", \"fechaElaboracion\":\"" + fechaElaboracion +"\", \"fechaVencimiento\":\"" + fechaVencimiento +"\", \"idSucursal\":\"" + idSucursal +"\"}";
+                + nombreEmpresa + "\", \"fechaElaboracion\":\"" + fechaElaboracion +"\", \"fechaVencimiento\":\"" + fechaVencimiento +"\", \"idSucursal\":\"" + idSucursal +  "\", \"id_empresa\":\"" + idEmpresa +"\"}";
     } 
 
 
